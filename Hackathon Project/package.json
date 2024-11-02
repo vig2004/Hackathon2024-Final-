@@ -1,0 +1,18 @@
+{
+    "name": "fee-receipt-upload",
+    "version": "1.0.0",
+    "description": "A system to upload and download fee receipts as PDFs",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "express": "^4.17.1",
+        "mongoose": "^5.9.10",
+        "multer": "^1.4.2",
+        "pdfkit": "^0.12.3"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
+}

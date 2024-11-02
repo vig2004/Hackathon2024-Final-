@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choosing Page</title>
+    <style>
+        
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #d4b5f6, #e6d4fa, #c6b3f2, #d5b8f9);
+            background-size: 400% 400%;
+            animation: gradientBackground 8s ease infinite;
+            font-family: Arial, sans-serif;
+        }
+
+        
+        @keyframes gradientBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+
+        
+        .button-container {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        
+        .big-button {
+            font-size: 24px;
+            padding: 20px 40px;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        
+        .big-button.one { background-color: #b299e5; }
+        .big-button.two { background-color: #a482d3; }
+
+
+        .big-button:hover {
+            transform: scale(1.05);
+        }
+
+        .big-button::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.6s ease;
+        }
+        .big-button:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .lostnfound img, .reciptdownload img {
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            border-radius: 12px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .lostnfound img:hover, .reciptdownload img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .big-button {
+                font-size: 20px;
+                padding: 15px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lostnfound">
+            <img src="lostnfound.jpg" alt="Lost and Found Section">
+        </div>
+        <div class="button-container">
+            <button class="big-button one" onclick="openFilesOne()" aria-label="Manage Your Fee Receipts">Manage Your Fee Receipts</button>
+            <button class="big-button two" onclick="openFilesTwo()" aria-label="Lost and Found">Lost and Found</button>
+        </div>
+        <div class="reciptdownload">
+            <img src="feerecipt.jpg" alt="Fee Receipt Download Section">
+        </div>
+    </div>
+    
+    <script>
+        function openFilesOne() {
+            window.open('receiptUploadDownload.html', '_blank');
+        }
+
+        function openFilesTwo() {
+            window.open('lost.html', '_blank');
+        }
+    </script>
+</body>
+</html>

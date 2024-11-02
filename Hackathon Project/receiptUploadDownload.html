@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Fees Transaction Portal</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+  <style>
+    
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #d0f0c0;
+  color: #333;
+  background: url(receiptback.png);
+  background-size: cover;
+  background-position: center;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: white;
+  margin-bottom: 20px;
+  text-align: center;
+  animation: fadeInDown 1s ease;
+}
+
+section {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+  background-color: #ffffff;
+  color: blue;
+  border: 1px solid #5cd9f9;
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+h2 {
+  color: #31a0e9;
+  font-size: 1.5rem;
+  text-align: center;
+  animation: fadeInUp 1s ease;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 1s ease;
+}
+
+label {
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+input[type="text"], input[type="file"] {
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+  border: 1px solid #1e99d3;
+  color: #333;
+  transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="file"]:focus {
+  outline: none;
+  border-color:  #1e99d3;
+  box-shadow: 0px 0px 5px  #1e99d3;
+}
+
+button {
+  padding: 12px;
+  margin-top: 20px;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color:  #1e99d3;
+  color: #f5f5f5;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+  background-color:  #1e99d3;
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+#uploadStatus, #downloadStatus {
+  font-weight: bold;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.success {
+  color: #4caf50;
+}
+
+.error {
+  color:  #1e99d3;
+}
+
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+  </style>
+</head>
+<body>
+  <h1>Student Fees Transaction Portal</h1>
+
+  
+  <section id="upload-section">
+    <h2>Upload Transaction</h2>
+    <form id="uploadForm">
+      <label for="rollNo">Roll No:</label>
+      <input type="text" id="rollNo" name="rollNo" required pattern="^[a-zA-Z0-9]{6,10}$" title="Enter a 6-10 character alphanumeric Roll No.">
+      <label for="transactionFile">Upload PDF:</label>
+      <input type="file" id="transactionFile" name="transactionFile" accept="application/pdf" required>
+      <button type="submit">Upload</button>
+    </form>
+    <p id="uploadStatus" class="error"></p>
+  </section>
+
+  
+  <section id="download-section">
+    <h2>Download Transaction</h2>
+    <form id="downloadForm">
+      <label for="downloadRollNo">Roll No:</label>
+      <input type="text" id="downloadRollNo" name="downloadRollNo" required pattern="^[a-zA-Z0-9]{6,10}$" title="Enter a 6-10 character alphanumeric Roll No.">
+      <button type="submit">Download PDF</button>
+    </form>
+    <p id="downloadStatus" class="error"></p>
+  </section>
+
+  <script>
+    $(document).ready(function () {
+      
+      $('#uploadForm').on('submit', function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+
+        $.ajax({
+          url: 'http://localhost:3000/upload',
+          type: 'POST',
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (response) {
+            $('#uploadStatus').text(response.message).removeClass('error').addClass('success');
+          },
+          error: function (xhr) {
+            const errMessage = xhr.responseJSON?.message || 'An error occurred during upload. Please try again.';
+            $('#uploadStatus').text(errMessage).addClass('error');
+          }
+        });
+      });
+
+      
+      $('#downloadForm').on('submit', function (e) {
+        e.preventDefault();
+        const rollNo = $('#downloadRollNo').val();
+
+        $.ajax({
+          url: `http://localhost:3000/download?rollNo=${rollNo}`,
+          type: 'GET',
+          xhrFields: { responseType: 'blob' },
+          success: function (data, status, xhr) {
+            const contentDisposition = xhr.getResponseHeader('Content-Disposition');
+            const filename = contentDisposition ? contentDisposition.split('filename=')[1] : `${rollNo}.pdf`;
+
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(data);
+            link.download = filename.replace(/"/g, ''); // Remove any quotes around filename
+            link.click();
+
+            $('#downloadStatus').text('Download successful.').removeClass('error').addClass('success');
+          },
+          error: function (xhr) {
+            const errMessage = xhr.responseJSON?.message || 'No file found for this Roll No.';
+            $('#downloadStatus').text(errMessage).addClass('error');
+          }
+        });
+      });
+    });
+  </script>
+  </script>
+</body>
+</html>
