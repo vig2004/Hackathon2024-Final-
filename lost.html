@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost & Found</title>
+    <link rel="stylesheet" href="lost.css">
+</head>
+<body>
+    <header>
+        <h1>Lost & Found Items</h1>
+        <nav>
+            <ul>
+                <li><a href="#lost">Lost Items</a></li>
+                <li><a href="#found">Found Items</a></li>
+                <li><a href="#search">Search</a></li>
+                <li><a href="#post">Post Notice</a></li>
+                <li><a href="#applications">View Applications</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="lost">
+            <h2>Lost Items</h2>
+            <div id="lost-items-list"></div>
+        </section>
+
+        <section id="found">
+            <h2>Found Items</h2>
+            <div id="found-items-list"></div>
+        </section>
+
+        <section id="search">
+            <h2>Search Items</h2>
+            <input type="text" id="search-query" placeholder="Search for items...">
+            <button onclick="searchItems()">Search</button>
+            <div id="search-results"></div>
+        </section>
+
+        <section id="post">
+            <h2>Post Notice</h2>
+            <form id="post-form" onsubmit="postNotice(event)">
+                <label for="item-type">Item Type:</label>
+                <select id="item-type" required>
+                    <option value="lost">Lost</option>
+                    <option value="found">Found</option>
+                </select>
+                <label for="item-description">Description:</label>
+                <textarea id="item-description" required></textarea>
+                <label for="contact-info">Contact Info:</label>
+                <input type="text" id="contact-info" required>
+                <button type="submit">Submit Notice</button>
+            </form>
+        </section>
+        
+        
+<section id="applications">
+    <h2>Retrieve Applications</h2>
+   
+<form id="application-form" onsubmit="submitApplication(event)">
+    <label for="applicant-name">Your Name:</label>
+    <input type="text" id="applicant-name" required>
+    <label for="applicant-contact">Your Contact Info:</label>
+    <input type="text" id="applicant-contact" required>
+    <label for="item-description-apply">Item Description:</label>
+    <textarea id="item-description-apply" required></textarea>
+    <label for="comments">Additional Comments:</label>
+    <textarea id="comments" placeholder="Write any additional comments here..."></textarea>
+    <button type="submit">Submit Application</button>
+</form>
+
+    </form>
+    <div id="applications-list"></div>
+</section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Lost & Found Application</p>
+    </footer>
+
+    <script src="lost.js"></script>
+</body>
+</html>
